@@ -1,0 +1,7 @@
+POST http://localhost:4000/app/adduser
+Content-Type: application/json
+{
+   " username": "kyle",
+   "email":"kyle@gmail.com",
+   "password":"123456789"
+}
