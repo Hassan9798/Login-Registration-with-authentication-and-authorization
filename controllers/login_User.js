@@ -3,13 +3,7 @@ const User = require('../models/users');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const auth = require('./auth-middleware');
-// module.exports.Login = () => {
-//   passport.authenticate('local', {
-//     successRedirect: '/app/hello',
-//     failureRedirect: '/user/login',
-//     failureFlash: true,
-//   });
-// };
+
 module.exports.Login = async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
 
@@ -17,10 +11,10 @@ module.exports.Login = async (req, res) => {
   if (user === null || undefined) {
     console.log('user is not found');
   } else {
-    // console.log(await bcrypt.compare(req.body.password, user.password));
     try {
       await bcrypt.compare(req.body.password, user.password).then((isMatch) => {
         if (!isMatch) {
+          res.send('invlaid email or password');
           res.status(400).json({ msg: 'invalid password or email' });
         } else {
           jwt.sign(
@@ -44,6 +38,6 @@ module.exports.Login = async (req, res) => {
 };
 module.exports.authenticate = (req, res) => {
   User.findById(req.user.id)
-    .select('-passowrd')
+    .select('-password')
     .then((user) => res.json(user));
 };

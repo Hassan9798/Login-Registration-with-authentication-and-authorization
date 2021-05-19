@@ -9,6 +9,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "express-validator": "^6.11.1",
     "flash": "^1.1.0",
     "joi": "^17.4.0",
     "jsonwebtoken": "^8.5.1",
