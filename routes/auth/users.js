@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const users = require('../controllers/users');
-const User = require('../models/users');
+const users = require('../../controllers/users');
+const User = require('../../models/users');
 const bcrypt = require('bcrypt');
 const { check } = require('express-validator');
 router.post(
-  '/adduser',
+  '/register',
   [
     check('fullname', 'full name must be 5+ character')
       .exists()
@@ -34,6 +34,6 @@ router.post(
   users.signup
 );
 
-router.get('/hello', users.hello);
+
 
 module.exports = router;

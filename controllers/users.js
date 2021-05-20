@@ -23,23 +23,11 @@ module.exports.signup = async (req, res) => {
           phoneno: req.body.phoneno,
         });
         user.save().then((user) => {
-          jwt.sign(
-            { id: user._id, username: user.username },
-            process.env.Webtoken_Secret,
-            { expiresIn: 900 },
-            (err, token) => {
-              if (err) throw err;
-
-              res.send({ token, user });
-            }
-          );
+          res.send({ user });
         });
       }
     });
   }
 
-  // let users = User.findOne({ email: req.body.email });
 };
-module.exports.hello = (req, res) => {
-  res.send('HEY');
-};
+

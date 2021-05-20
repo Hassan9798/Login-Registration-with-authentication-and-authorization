@@ -1,23 +1,11 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const userroutes = require('./routes/users');
-const LoginUser = require('./routes/LoginUser');
-const passport = require('passport');
-const User = require('./models/users');
-const initializePassport = require('./controllers/passport_authuser');
+const userroutes = require('./routes/auth/users');
 const flash = require('flash');
 const session = require('express-session');
 const cors = require('cors');
 require('dotenv').config();
-
-// initializePassport(
-//   passport,
-//   (email) => {
-//     return User.find({ email: email });
-//   },
-//   (id) => User.find((user) => user._id === id)
-// );
 
 mongoose
   .connect(
@@ -27,20 +15,26 @@ mongoose
 
 app.use(express.json());
 app.use(cors());
-// app.use(passport.initialize());
-// app.use(passport.session());
-// app.use(
-//   session({
-//     secret: process.env.Session_Secret,
-//     resave: false,
-//     saveUninitialized: false,
-//   })
-// );
-// app.use(flash());
+app.use(session({
+  secret: 'MySecretKey',
+  saveUninitialized: true,
+  resave: true,
+  cookie: {
+      httpOnly: false,
+      secure: false,
+  }
+}));
 
-/*Routes Middlewares */
-app.use('/app', userroutes);
-app.use('/user', LoginUser);
+// use passport JS Module for authentication purposes.
+require('./modules/passport/passport')(app);
+// Login Routes
+const loginRoutes = require('./routes/auth/LoginRoutes');
+app.use('/user', loginRoutes);
+
+/*Register Routes */
+app.use('/user', userroutes);
+
+
 app.listen(process.env.PORT || 4000, () => {
   console.log('server is running');
 });
